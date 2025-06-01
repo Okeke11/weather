@@ -27,44 +27,65 @@
     <label for="country">Enter country's name: </label>
     <input type="text" id="country" placeholder="e.g. Nigeria">
     <button onclick="getcountry()">Submit</button>
+    <div id="weatherResult" style="margin-top: 20px;"></div>
+
 </div>
     
 <script>
     async function getcountry() {
-      let country = document.getElementById("country").value.trim();
-  
-      if (!country) {
-        alert("Please enter a country name");
-        return;
-      }
-  
-      // Optional: encode the country name (for countries like "Côte d'Ivoire")
-      const encodedCountry = encodeURIComponent(country);
-  
-      const apiUrl = 'https://restcountries.com/v3.1/name/${encodedCountry}?fullText=true';
-  
-      try {
-        const response = await fetch(apiUrl);
-  
-        if (!response.ok) {
-          throw new Error("Country not found");
-        }
-  
-        const data = await response.json();
-        const countryInfo = data[0];
-  
-        const capital = countryInfo.capital ? countryInfo.capital[0] : "No capital found";
-        const lat = countryInfo.latlng[0];
-        const lon = countryInfo.latlng[1];
-  
-        console.log("Capital:", capital);
-        console.log("Latitude:", lat);
-        console.log("Longitude:", lon);
-      } catch (error) {
-        console.error("Error:", error.message);
-        alert("Country not found. Please check the spelling and try again.");
-      }
-    }
+  let country = document.getElementById("country").value.trim();
+
+  if (!country) {
+    alert("Please enter a country name");
+    return;
+  }
+
+  const encodedCountry = encodeURIComponent(country);
+  const apiUrl = `https://restcountries.com/v3.1/name/${encodedCountry}?fullText=true`;
+
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) throw new Error("Country not found");
+
+    const data = await response.json();
+    const countryInfo = data[0];
+
+    const lat = countryInfo.latlng[0];
+    const lon = countryInfo.latlng[1];
+
+    console.log("Latitude:", lat);
+    console.log("Longitude:", lon);
+
+    // 🌤️ WEATHER API HERE
+    const apiKey = "4136724b0ba62c056cb826dc362ed6a3"; // <-- Replace this with your actual key
+    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+    const weatherResponse = await fetch(weatherUrl);
+    if (!weatherResponse.ok) throw new Error("Weather data not found");
+
+    const weatherData = await weatherResponse.json();
+
+    const temperature = weatherData.main.temp;
+    const condition = weatherData.weather[0].description;
+    const location = weatherData.name;
+
+    console.log(`Weather in ${location}: ${temperature}°C, ${condition}`);
+    // alert(`Weather in ${location}: ${temperature}°C, ${condition}`);
+    document.getElementById('weatherResult').innerHTML = `
+  <h2>Weather in ${location}</h2>
+  <p>Temperature: ${temperature}°C</p>
+  <p>Condition: ${condition}</p>
+`;
+
+
+  } catch (error) {
+    console.error("Error:", error.message);
+    // alert("Something went wrong. Please check spelling or try again.");
+    document.getElementById('weatherResult').innerHTML = `<p style="color:red;">Something went wrong. Please check spelling or try again.</p>`;
+
+  }
+}
+
   </script>
 </body>
 </html>
