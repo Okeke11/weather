@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        background-color: black;
+        color: antiquewhite;
+    }
+    #country{
+        border-radius: 3px;
+        outline: 1px solid white;
+        border: none;
+    }
+    button{
+        border-radius: 3px;
+        outline: 1px solid white;
+        border: none;
+    }
+</style>
+<body>
+    <h1>The Weather Now</h1>
+<div class="container">
+    <label for="country">Enter country's name: </label>
+    <input type="text" id="country" placeholder="e.g. Nigeria">
+    <button onclick="getcountry()">Submit</button>
+</div>
+    
+<script>
+    async function getcountry() {
+      let country = document.getElementById("country").value.trim();
+  
+      if (!country) {
+        alert("Please enter a country name");
+        return;
+      }
+  
+      // Optional: encode the country name (for countries like "Côte d'Ivoire")
+      const encodedCountry = encodeURIComponent(country);
+  
+      const apiUrl = 'https://restcountries.com/v3.1/name/${encodedCountry}?fullText=true';
+  
+      try {
+        const response = await fetch(apiUrl);
+  
+        if (!response.ok) {
+          throw new Error("Country not found");
+        }
+  
+        const data = await response.json();
+        const countryInfo = data[0];
+  
+        const capital = countryInfo.capital ? countryInfo.capital[0] : "No capital found";
+        const lat = countryInfo.latlng[0];
+        const lon = countryInfo.latlng[1];
+  
+        console.log("Capital:", capital);
+        console.log("Latitude:", lat);
+        console.log("Longitude:", lon);
+      } catch (error) {
+        console.error("Error:", error.message);
+        alert("Country not found. Please check the spelling and try again.");
+      }
+    }
+  </script>
+</body>
+</html>
