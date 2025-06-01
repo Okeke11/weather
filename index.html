@@ -7,26 +7,70 @@
 </head>
 <style>
     *{
-        background-color: black;
+        background-color: #222;
         color: antiquewhite;
     }
     #country{
-        border-radius: 3px;
-        outline: 1px solid white;
+        border-radius: 4px;
+        outline: 1px solid rgb(183, 152, 152);
         border: none;
+        height: 26px;
     }
     button{
         border-radius: 3px;
         outline: 1px solid white;
+        height: 20px;
         border: none;
+        transition: transform 0.3s ease;
+        
     }
+    button:hover{
+      /* color: red; */
+      background-color: rgba(58, 78, 76, 0.739);
+      transform: scale(1.2); /* grows 20% bigger on hover */
+  cursor: pointer; /* show pointer cursor */
+    }
+    body, html {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center; /* center horizontally */
+  align-items: center;    /* center vertically */
+  background-color: #222;
+  color: antiquewhite;
+  font-family: Arial, sans-serif;
+  flex-direction: column;
+}
+
+.container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.weather-box {
+  width: 300px;
+  padding: 20px;
+  border: 2px solid antiquewhite;
+  border-radius: 10px;
+  background-color: #222;
+  box-shadow: 0 0 15px #be6a6a;
+  text-align: center;
+}
+.weather-box img {
+  width: 100px;
+  height: 100px;
+  margin: 10px 0;
+}
+
 </style>
 <body>
     <h1>The Weather Now</h1>
-<div class="container">
-    <label for="country">Enter country's name: </label>
-    <input type="text" id="country" placeholder="e.g. Nigeria">
+<div id="weatherResult" class="weather-box">
+    <strong><label for="country" style="font-size: larger;">Enter country's name: </label></strong> <br> <br>
+    <input type="text" id="country" placeholder="e.g. Nigeria"><br> <br>
     <button onclick="getcountry()">Submit</button>
+    <button id="backBtn" style="display:none; margin-top: 10px;" onclick="goBack()">Back</button>
+
     <div id="weatherResult" style="margin-top: 20px;"></div>
 
 </div>
@@ -67,15 +111,22 @@
 
     const temperature = weatherData.main.temp;
     const condition = weatherData.weather[0].description;
+    const iconCode = weatherData.weather[0].icon;
+    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
     const location = weatherData.name;
 
     console.log(`Weather in ${location}: ${temperature}°C, ${condition}`);
     // alert(`Weather in ${location}: ${temperature}°C, ${condition}`);
     document.getElementById('weatherResult').innerHTML = `
   <h2>Weather in ${location}</h2>
+  <img src="${iconUrl}" alt="${condition}" />
   <p>Temperature: ${temperature}°C</p>
   <p>Condition: ${condition}</p>
+  <button onclick="location.reload()">Back</button>
+
 `;
+// document.getElementById('backBtn').style.display = 'inline-block';
+
 
 
   } catch (error) {
@@ -84,6 +135,13 @@
     document.getElementById('weatherResult').innerHTML = `<p style="color:red;">Something went wrong. Please check spelling or try again.</p>`;
 
   }
+}
+
+function goBack() {
+  document.getElementById('weatherResult').innerHTML = ''; // Clear weather display
+  document.getElementById('backBtn').style.display = 'none'; // Hide back button
+  document.getElementById('country').value = ''; // Clear input
+  document.getElementById('country').focus(); // Focus back on input
 }
 
   </script>
