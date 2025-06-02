@@ -9,10 +9,23 @@
 </head>
 <style>
     *{
-        background-color: #222;
+        /* background-color: #222; */
         color: antiquewhite;
-         font-family: 'Poppins', sans-serif;
+        font-family: 'Poppins', sans-serif;
     }
+body {
+  background-color: #0d0d0d; /* or leave it to be image only */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.5s ease-in-out;
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
     #location{
         border-radius: 4px;
         outline: 1px solid rgb(183, 152, 152);
@@ -58,7 +71,11 @@
   font-family: Arial, sans-serif;
   flex-direction: column;
 }
+h1, body{
+  background-color: none;
+}
 
+]
 .container {
   text-align: center;
   margin-bottom: 20px;
@@ -123,6 +140,8 @@
       const country = data.sys.country;
       const temperature = data.main.temp;
       const condition = data.weather[0].main;
+      const weatherMain = data.weather[0].main;
+      setBackground(weatherMain);
       const icon = data.weather[0].icon;
       const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
@@ -146,6 +165,33 @@
   document.getElementById('country').focus(); // Focus back on input
 }
   }
+  function setBackground(weatherMain) {
+  let bg = "images/default.jpg"; // fallback
+
+  switch (weatherMain.toLowerCase()) {
+    case "clear":
+      bg = "images/clear.jpg";
+      break;
+    case "clouds":
+      bg = "images/clouds.jpg";
+      break;
+    case "rain":
+    case "drizzle":
+      bg = "images/rain.jpg";
+      break;
+    case "thunderstorm":
+      bg = "images/thunder.jpg";
+      break;
+    case "snow":
+      bg = "images/snow.jpg";
+      break;
+    default:
+      bg = "images/default.jpg";
+  }
+
+  document.body.style.backgroundImage = `url('${bg}')`;
+}
+
 </script>
 
 </body>
