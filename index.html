@@ -10,7 +10,7 @@
         background-color: #222;
         color: antiquewhite;
     }
-    #country{
+    #location{
         border-radius: 4px;
         outline: 1px solid rgb(183, 152, 152);
         border: none;
@@ -66,84 +66,64 @@
 <body>
     <h1>The Weather Now</h1>
 <div id="weatherResult" class="weather-box">
-    <strong><label for="country" style="font-size: larger;">Enter country's name: </label></strong> <br> <br>
-    <input type="text" id="country" placeholder="e.g. Nigeria"><br> <br>
-    <button onclick="getcountry()">Submit</button>
-    <button id="backBtn" style="display:none; margin-top: 10px;" onclick="goBack()">Back</button>
+    <strong><label for="location" style="font-size: larger;">Enter a city or country: </label></strong><br> <br>
+<input type="text" id="location" placeholder="e.g. Lagos or Nigeria"><br> <br>
+<button onclick="getWeather()">Submit</button>
 
-    <div id="weatherResult" style="margin-top: 20px;"></div>
+<div id="weatherResult" style="margin-top: 20px;"></div>
+<!-- <button id="backBtn" onclick="location.reload()" style="display: none;">Back</button> -->
 
 </div>
     
-<script>
-    async function getcountry() {
-  let country = document.getElementById("country").value.trim();
 
-  if (!country) {
-    alert("Please enter a country name");
-    return;
-  }
+  <script>
+  async function getWeather() {
+    const location = document.getElementById("location").value.trim();
 
-  const encodedCountry = encodeURIComponent(country);
-  const apiUrl = `https://restcountries.com/v3.1/name/${encodedCountry}?fullText=true`;
+    if (!location) {
+      alert("Please enter a city or country");
+      return;
+    }
 
-  try {
-    const response = await fetch(apiUrl);
-    if (!response.ok) throw new Error("Country not found");
+    const apiKey = "4136724b0ba62c056cb826dc362ed6a3"; 
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&appid=${apiKey}&units=metric`;
 
-    const data = await response.json();
-    const countryInfo = data[0];
+    try {
+      const response = await fetch(url);
 
-    const lat = countryInfo.latlng[0];
-    const lon = countryInfo.latlng[1];
+      if (!response.ok) {
+        throw new Error("Location not found");
+      }
 
-    console.log("Latitude:", lat);
-    console.log("Longitude:", lon);
+      const data = await response.json();
+      const name = data.name;
+      const country = data.sys.country;
+      const temperature = data.main.temp;
+      const condition = data.weather[0].main;
+      const icon = data.weather[0].icon;
+      const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
-    // 🌤️ WEATHER API HERE
-    const apiKey = "4136724b0ba62c056cb826dc362ed6a3"; // <-- Replace this with your actual key
-    const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+      document.getElementById("weatherResult").innerHTML = `
+        <h2>Weather in ${name}, ${country}</h2>
+        <img src="${iconUrl}" alt="${condition}" />
+        <p>Temperature: ${temperature}°C</p>
+        <p>Condition: ${condition}</p>
+        <button onclick="location.reload()">Back</button>
+      `;
 
-    const weatherResponse = await fetch(weatherUrl);
-    if (!weatherResponse.ok) throw new Error("Weather data not found");
-
-    const weatherData = await weatherResponse.json();
-
-    const temperature = weatherData.main.temp;
-    const condition = weatherData.weather[0].description;
-    const iconCode = weatherData.weather[0].icon;
-    const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
-    const location = weatherData.name;
-
-    console.log(`Weather in ${location}: ${temperature}°C, ${condition}`);
-    // alert(`Weather in ${location}: ${temperature}°C, ${condition}`);
-    document.getElementById('weatherResult').innerHTML = `
-  <h2>Weather in ${location}</h2>
-  <img src="${iconUrl}" alt="${condition}" />
-  <p>Temperature: ${temperature}°C</p>
-  <p>Condition: ${condition}</p>
-  <button onclick="location.reload()">Back</button>
-
-`;
-// document.getElementById('backBtn').style.display = 'inline-block';
-
-
-
-  } catch (error) {
-    console.error("Error:", error.message);
-    // alert("Something went wrong. Please check spelling or try again.");
-    document.getElementById('weatherResult').innerHTML = `<p style="color:red;">Something went wrong. Please check spelling or try again.</p>`;
-
-  }
-}
-
-function goBack() {
+      // document.getElementById("backBtn").style.display = "inline-block";
+    } catch (error) {
+      console.error("Error:", error.message);
+      alert("Something went wrong. Please check spelling or try again.");
+    }
+    function goBack() {
   document.getElementById('weatherResult').innerHTML = ''; // Clear weather display
   document.getElementById('backBtn').style.display = 'none'; // Hide back button
   document.getElementById('country').value = ''; // Clear input
   document.getElementById('country').focus(); // Focus back on input
 }
+  }
+</script>
 
-  </script>
 </body>
 </html>
