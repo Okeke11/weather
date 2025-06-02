@@ -3,35 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     <title>Document</title>
 </head>
 <style>
     *{
         background-color: #222;
         color: antiquewhite;
+         font-family: 'Poppins', sans-serif;
     }
     #location{
         border-radius: 4px;
         outline: 1px solid rgb(183, 152, 152);
         border: none;
         height: 26px;
+
+        margin-right: 2%;
     }
     button{
         border-radius: 3px;
         outline: 1px solid white;
-        height: 20px;
+        height: 5%;
         border: none;
         transition: transform 0.3s ease;
-        
+        margin-left: 12.5px;
     }
     button:hover{
       /* color: red; */
       background-color: rgba(58, 78, 76, 0.739);
-      transform: scale(1.2); /* grows 20% bigger on hover */
+      transform: scale(1.1); /* grows 20% bigger on hover */
   cursor: pointer; /* show pointer cursor */
     }
+    input, button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background-color: #2c2c2c;
+    color: #fdf6e3;
+  }
     body, html {
   height: 100%;
+  width: 100%;
   margin: 0;
   display: flex;
   justify-content: center; /* center horizontally */
@@ -49,31 +66,37 @@
 
 .weather-box {
   width: 300px;
-  padding: 20px;
-  border: 2px solid antiquewhite;
-  border-radius: 10px;
+  padding: 30px;
+  border: 2px solid rgb(167, 159, 148);
+  border-radius: 20px;
   background-color: #222;
   box-shadow: 0 0 15px #be6a6a;
   text-align: center;
+  padding-right: 50px;
 }
 .weather-box img {
   width: 100px;
-  height: 100px;
+  height: auto;
   margin: 10px 0;
 }
-
+ @media screen and (max-width: 480px) {
+    .container {
+      max-width: 90%;
+      margin-top: 10vh;
+    }
+  }
 </style>
 <body>
     <h1>The Weather Now</h1>
-<div id="weatherResult" class="weather-box">
-    <strong><label for="location" style="font-size: larger;">Enter a city or country: </label></strong><br> <br>
-<input type="text" id="location" placeholder="e.g. Lagos or Nigeria"><br> <br>
-<button onclick="getWeather()">Submit</button>
+    <div class="container">
+      <div id="weatherResult" class="weather-box">
+        <strong><label for="location" style="font-size: larger;">Enter a city or country: </label></strong><br> <br>
+        <input type="text" id="location" placeholder="e.g. Lagos or Nigeria"><br> <br>
+        <button onclick="getWeather()">Submit</button>
+        <div id="weatherResult" style="margin-top: 20px;"></div>
+      </div>
+    </div>
 
-<div id="weatherResult" style="margin-top: 20px;"></div>
-<!-- <button id="backBtn" onclick="location.reload()" style="display: none;">Back</button> -->
-
-</div>
     
 
   <script>
