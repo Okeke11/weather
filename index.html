@@ -13,19 +13,6 @@
         color: antiquewhite;
         font-family: 'Poppins', sans-serif;
     }
-body {
-  background-color: #0d0d0d; /* or leave it to be image only */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-image 0.5s ease-in-out;
-  min-height: 80vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-}
-
     #location{
         border-radius: 4px;
         outline: 1px solid rgb(183, 152, 152);
@@ -37,7 +24,7 @@ body {
     button{
         border-radius: 3px;
         outline: 1px solid white;
-        height: 5%;
+        height: 20%;
         border: none;
         transition: transform 0.3s ease;
         margin-left: 12.5px;
@@ -59,10 +46,11 @@ body {
     background-color: #2c2c2c;
     color: #fdf6e3;
   }
-    body, html {
+    html, body {
   height: 100%;
   width: 100%;
   margin: 0;
+  padding: 0;
   display: flex;
   justify-content: center; /* center horizontally */
   align-items: center;    /* center vertically */
@@ -71,25 +59,50 @@ body {
   font-family: Arial, sans-serif;
   flex-direction: column;
 }
+body {
+  background-color: #0d0d0d; /* or leave it to be image only */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 0.5s ease-in-out;
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  flex-direction: column;
+}
 h1, body{
   background-color: none;
 }
-
-]
+/* #weatherResult{
+margin-left: 30px;
+} */
 .container {
+    width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   text-align: center;
   margin-bottom: 20px;
+  height: 100vh;
 }
 
 .weather-box {
-  width: 300px;
+  width: 90%;
+   max-width: 370px;
   padding: 30px;
   border: 2px solid rgb(167, 159, 148);
   border-radius: 20px;
   background-color: #222;
   box-shadow: 0 0 15px #be6a6a;
   text-align: center;
-  padding-right: 50px;
+  padding-right: 60px;
+  margin-left: -35px;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 .weather-box img {
   width: 100px;
@@ -100,17 +113,73 @@ h1, body{
     .container {
       max-width: 90%;
       margin-top: 10vh;
+      text-align: center;
     }
   }
+  @media screen and (max-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .weather-box {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  input, button {
+    font-size: 1rem;
+    padding: 10px;
+  }
+
+  .weather-box img {
+    width: 80px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  input, button {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .weather-box img {
+    width: 60px;
+  }
+}
+.inputt{
+margin-left: 30px;
+}
+#weatherresult {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-left: 50px;
+}
+
+
 </style>
 <body>
     <h1>The Weather Now</h1>
     <div class="container">
       <div id="weatherResult" class="weather-box">
-        <strong><label for="location" style="font-size: larger;">Enter a city or country: </label></strong><br> <br>
+        <strong><label for="location" style="font-size: larger;" class="inputt">Enter a city or country: </label></strong><br> <br>
         <input type="text" id="location" placeholder="e.g. Lagos or Nigeria"><br> <br>
         <button onclick="getWeather()">Submit</button>
-        <div id="weatherResult" style="margin-top: 20px;"></div>
+        <div class="weatherresult" id="weatherresult" style="margin-top: 20px;"></div>
       </div>
     </div>
 
